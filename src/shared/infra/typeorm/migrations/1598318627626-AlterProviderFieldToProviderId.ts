@@ -23,7 +23,7 @@ export class AlterProviderFieldToProviderId1598318627626
             new TableForeignKey({
                 name: 'AppointmentProvider',
                 columnNames: ['provider_id'],
-                referencedColumnNames: ['uuid'],
+                referencedColumnNames: ['id'],
                 referencedTableName: 'users',
                 onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',

@@ -17,7 +17,7 @@ describe('CreateAppointment', () => {
             provider_id: '1234567',
         });
 
-        expect(appointment).toHaveProperty('uuid');
+        expect(appointment).toHaveProperty('id');
         expect(appointment.provider_id).toBe('1234567');
     });
 

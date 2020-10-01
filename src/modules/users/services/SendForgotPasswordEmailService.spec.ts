@@ -62,7 +62,7 @@ describe('SendForgotPasswordEmail', () => {
             email: 'johndoe@example.com',
         });
 
-        expect(generateToken).toHaveBeenCalledWith(user.uuid);
+        expect(generateToken).toHaveBeenCalledWith(user.id);
     });
 });
 

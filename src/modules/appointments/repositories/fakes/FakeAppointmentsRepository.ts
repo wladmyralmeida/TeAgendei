@@ -23,7 +23,7 @@ class AppointmentsRepository implements IAppointmentsRepository {
         const appointment = new Appointment();
 
         // Pega um objeto e une a propriedade passada pra dentro dele;
-        Object.assign(appointment, { uuid: uuid(), date, provider_id });
+        Object.assign(appointment, { id: uuid(), date, provider_id });
 
         this.appointments.push(appointment);
 

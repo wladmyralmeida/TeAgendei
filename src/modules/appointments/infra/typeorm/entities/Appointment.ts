@@ -13,7 +13,7 @@ import User from '@modules/users/infra/typeorm/entities/User';
 @Entity('appointments')
 class Appointment {
     @PrimaryGeneratedColumn('uuid')
-    uuid: string;
+    id: string;
 
     @Column()
     provider_id: string;

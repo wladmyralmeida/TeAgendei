@@ -31,7 +31,7 @@ describe('ResetPasswordEmail', () => {
             password: '123456',
         });
 
-        const { token } = await fakeUserTokensRepository.generate(user.uuid);
+        const { token } = await fakeUserTokensRepository.generate(user.id);
 
         const generateHash = jest.spyOn(fakeHashProvider, 'generateHash');
 
@@ -40,7 +40,7 @@ describe('ResetPasswordEmail', () => {
             token,
         });
 
-        const updateUser = await fakeUsersRepository.findById(user.uuid);
+        const updateUser = await fakeUsersRepository.findById(user.id);
 
         expect(generateHash).toHaveBeenCalledWith('123123');
         expect(updateUser?.password).toBe('123123');
@@ -76,7 +76,7 @@ describe('ResetPasswordEmail', () => {
             password: '123456',
         });
 
-        const { token } = await fakeUserTokensRepository.generate(user.uuid);
+        const { token } = await fakeUserTokensRepository.generate(user.id);
 
         //Em vês de executar uma função nativa do JS, vai executar uma função criada por mim;
         jest.spyOn(Date, 'now').mockImplementationOnce(() => {

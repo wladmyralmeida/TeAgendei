@@ -24,7 +24,7 @@ describe('UpdateUserAvatar', () => {
         });
 
         await updateUserAvatar.execute({
-            user_id: fakeUser.uuid,
+            user_id: fakeUser.id,
             avatarFilename: 'avatar.jpg',
         });
 
@@ -67,12 +67,12 @@ describe('UpdateUserAvatar', () => {
         });
 
         await updateUserAvatar.execute({
-            user_id: fakeUser.uuid,
+            user_id: fakeUser.id,
             avatarFilename: 'avatar.jpg',
         });
 
         await updateUserAvatar.execute({
-            user_id: fakeUser.uuid,
+            user_id: fakeUser.id,
             avatarFilename: 'avatar2.jpg',
         });
 
