@@ -1,34 +1,33 @@
-import { injectable, inject } from 'tsyringe';
+import { inject, injectable } from 'tsyringe';
+import AppError from '@shared/errors/AppError';
 import path from 'path';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
-import IUsersRepository from '../repositories/IUsersRepository';
-import IUserTokensRepository from '../repositories/IUserTokensRepository';
-
-import AppError from '@shared/errors/AppError';
+import IUserRepository from '../repositories/IUsersRepository';
+import IUsersTokenRepository from '../repositories/IUserTokensRepository';
 
 interface IRequest {
     email: string;
 }
 
 @injectable()
-export default class SendForgotPasswordEmailService {
+class SendForgotPasswordService {
     constructor(
         @inject('UsersRepository')
-        private usersRepository: IUsersRepository,
+        private usersRepository: IUserRepository,
 
-        @inject('MailProider')
+        @inject('MailProvider')
         private mailProvider: IMailProvider,
 
         @inject('UserTokensRepository')
-        private userTokensRepository: IUserTokensRepository,
+        private userTokensRepository: IUsersTokenRepository,
     ) {}
 
-    async execute({ email }: IRequest): Promise<void> {
+    public async execute({ email }: IRequest): Promise<void> {
         const user = await this.usersRepository.findByEmail(email);
 
         if (!user) {
-            throw new AppError('Users does not exists.');
+            throw new AppError('User this not existing');
         }
 
         const { token } = await this.userTokensRepository.generate(user.id);
@@ -45,7 +44,7 @@ export default class SendForgotPasswordEmailService {
                 name: user.name,
                 email: user.email,
             },
-            subject: 'TeAgendei - Recuperação de senha',
+            subject: '[GoBarber] Recuperação de senha',
             templateData: {
                 file: forgotPasswordTemplate,
                 variables: {
@@ -56,3 +55,5 @@ export default class SendForgotPasswordEmailService {
         });
     }
 }
+
+export default SendForgotPasswordService;
