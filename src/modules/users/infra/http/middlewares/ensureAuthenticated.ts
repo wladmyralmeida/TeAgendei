@@ -4,7 +4,7 @@ import authConfig from "@config/auth";
 
 import AppError from '@shared/errors/AppError';
 
-interface TokenPayload {
+interface ITokenPayload {
   iat: number;
   expo: number;
   sub: string;
@@ -29,7 +29,7 @@ export default function ensureAuthenticated(
     const decoded = verify(token, authConfig.jwt.secret);
 
     //Forçar o formato de token para a variável decoded, que pode ser string ou objetct;
-    const { sub } = decoded as TokenPayload;
+    const { sub } = decoded as ITokenPayload;
 
     //Sobrescrever tipos de uma lib para que user seja válido dentro do request;
     //Que na verdade é só um anexo do que será colocado nela a partir do arquivo express.d.ts;
