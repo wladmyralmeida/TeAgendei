@@ -25,7 +25,7 @@ export default class ResetPasswordService {
         private hashProvider: IHashProvider,
     ) {}
 
-    async execute({ token, password }: IRequest): Promise<void> {
+    public async execute({ token, password }: IRequest): Promise<void> {
         const userToken = await this.userTokensRepository.findByToken(token);
 
         if (!userToken) {
