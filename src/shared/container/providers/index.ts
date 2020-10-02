@@ -2,15 +2,25 @@ import { container } from 'tsyringe';
 
 import IStorageProvider from './StorageProvider/models/IStorageProvider';
 import DiskStorageProvider from './StorageProvider/implementations/DiskStorageProvider';
+
 import IMailProvider from './MailProvider/models/IMailProvider';
 import EtherealMailProvider from './MailProvider/implementations/EtherealMailProvider';
 
+import IMailTemplateProvider from './MailTemplateProvider/models/IMailTemplateProvider';
+import HandlebarsMailTemplateProvider from './MailTemplateProvider/implementations/HandlebarsMailTemplateProvider';
+
+//!!Todos serviços podem mudar, por isso é criado de modos isolados;
 container.registerSingleton<IStorageProvider>(
     'StorageProvider',
     DiskStorageProvider,
 );
 
+container.registerSingleton<IMailTemplateProvider>(
+    'MailTemplateProvider',
+    HandlebarsMailTemplateProvider,
+);
+
 container.registerInstance<IMailProvider>(
     'MailProvider',
-    new EtherealMailProvider(),
+    container.resolve(EtherealMailProvider),
 );

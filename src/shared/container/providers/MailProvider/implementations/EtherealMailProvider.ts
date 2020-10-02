@@ -1,12 +1,20 @@
 import nodemailer, { Transporter } from 'nodemailer';
-import IMailProvider from '../models/IMailProvider';
+import { injectable, inject } from 'tsyringe';
 
+import IMailProvider from '../models/IMailProvider';
+import ISendMailDTO from '../dtos/ISendMailDTO';
+import IMailTemplateProvider from '../../MailTemplateProvider/models/IMailTemplateProvider';
+
+@injectable()
 export default class EtherealMailProvider implements IMailProvider {
     private client: Transporter;
 
-    constructor() {
+    constructor(
+        //Fazendo um provider depender de outro, pois não faz sentido esse sem o mailProvider;
+        @inject('MailTemplateProvider')
+        private mailTemplateProvider: IMailTemplateProvider) {
         //Como não se pode usar await no constructor, foi feito dessa forma;
-        const account = nodemailer.createTestAccount().then(account => {
+        nodemailer.createTestAccount().then(account => {
             const transporter = nodemailer.createTransport({
                 host: account.smtp.host,
                 port: account.smtp.port,
@@ -17,18 +25,24 @@ export default class EtherealMailProvider implements IMailProvider {
                 },
             });
 
-            console.log(account);
-
             this.client = transporter;
         });
     }
 
-    public async sendMail(to: string, body: string): Promise<void> {
+    public async sendMail({ to, from, subject, templateData }: ISendMailDTO): Promise<void> {
         const message = await this.client.sendMail({
-            from: 'Equipe Te Agendei <equipe@teagendei.com.br>',
-            to,
-            subject: 'Recuperação de senha',
-            text: body,
+            from: {
+                name:
+                    from?.name || 'Equipe Te Agendei <equipe@teagendei.com.br>',
+                address: from?.email || 'equipe@teagendei.com.br',
+            },
+            to: {
+                name: to.name,
+                address: to.email,
+            },
+            subject,
+            //Lidando com o provider de template diretamente no provider de email;
+            html: await this.mailTemplateProvider.parse(templateData),
         });
 
         console.log('Message sent: %s', message.messageId);
