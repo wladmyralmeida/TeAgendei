@@ -1,13 +1,13 @@
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
-import ListMonthAvailabilityService from './ListProviderMonthAvailabilityService';
+import ListProviderMonthAvailabilityService from './ListProviderMonthAvailabilityService';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
-let listMonthAvailabilityService: ListMonthAvailabilityService;
+let listMonthAvailabilityService: ListProviderMonthAvailabilityService;
 
-describe('ListMonthAvailable', () => {
+describe('ListProviderMonthAvailability', () => {
     beforeEach(() => {
         fakeAppointmentsRepository = new FakeAppointmentsRepository();
-        listMonthAvailabilityService = new ListMonthAvailabilityService(
+        listMonthAvailabilityService = new ListProviderMonthAvailabilityService(
             fakeAppointmentsRepository,
         );
     });
@@ -65,12 +65,7 @@ describe('ListMonthAvailable', () => {
 
         await fakeAppointmentsRepository.create({
             provider_id: 'user',
-            date: new Date(2020, 4, 20, 17, 0, 0),
-        });
-
-        await fakeAppointmentsRepository.create({
-            provider_id: 'user',
-            date: new Date(2020, 4, 21, 12, 0, 0),
+            date: new Date(2020, 4, 21, 8, 0, 0),
         });
 
         //Semanticamente pro dev o número correto para o mês de maio é 5, mas no objeto date
