@@ -2,8 +2,9 @@ import Appointment from '../entities/Appointment';
 
 import IAppointmentsRepository from '@modules/appointments/repositories/IAppointmentsRepository';
 import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
+import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllInMonthFromProviderDTO';
 
-import { getRepository, Repository } from 'typeorm';
+import { getRepository, Repository, Raw } from 'typeorm';
 
 class AppointmentsRepository implements IAppointmentsRepository {
     private ormRepository: Repository<Appointment>;
@@ -18,6 +19,28 @@ class AppointmentsRepository implements IAppointmentsRepository {
         });
 
         return findAppointment;
+    }
+
+    public async findAllInMonthFromProvider({
+        provider_id,
+        month,
+        year,
+    }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
+        //Mês abaixo de 10 inclui o 0; Logo, se a minha string não tiver 2 dígitos, preencher 0.
+        const parsedMonth = String(month).padStart(2, '0');
+
+        const appointments = await this.ormRepository.find({
+            where: {
+                provider_id,
+                //Nome que o campo vai ter no banco Postgres;
+                date: Raw(
+                    dateFieldName =>
+                        `to_char(${dateFieldName}, 'MM-YYYY') = '${parsedMonth}-${year}'`,
+                ),
+            },
+        });
+
+        return appointments;
     }
 
     public async create({
