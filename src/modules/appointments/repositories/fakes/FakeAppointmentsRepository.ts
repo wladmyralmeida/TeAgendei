@@ -24,11 +24,10 @@ class AppointmentsRepository implements IAppointmentsRepository {
         month,
         year,
     }: IFindAllInMonthFromProviderDTO): Promise<Appointment[]> {
-
         const appointments = this.appointments.filter(appointment => {
             appointment.provider_id === provider_id &&
-            getMonth(appointment.date) + 1 === month &&
-            getYear(appointment.date) === year
+                getMonth(appointment.date) + 1 === month &&
+                getYear(appointment.date) === year;
         });
 
         return appointments;
@@ -40,12 +39,11 @@ class AppointmentsRepository implements IAppointmentsRepository {
         month,
         year,
     }: IFindAllInDayFromProviderDTO): Promise<Appointment[]> {
-
         const appointments = this.appointments.filter(appointment => {
             appointment.provider_id === provider_id &&
-            getDate(appointment.date) === day &&
-            getMonth(appointment.date) + 1 === month &&
-            getYear(appointment.date) === year
+                getDate(appointment.date) === day &&
+                getMonth(appointment.date) + 1 === month &&
+                getYear(appointment.date) === year;
         });
 
         return appointments;
@@ -53,12 +51,13 @@ class AppointmentsRepository implements IAppointmentsRepository {
 
     public async create({
         provider_id,
+        user_id,
         date,
     }: ICreateAppointmentDTO): Promise<Appointment> {
         const appointment = new Appointment();
 
         // Pega um objeto e une a propriedade passada pra dentro dele;
-        Object.assign(appointment, { id: uuid(), date, provider_id });
+        Object.assign(appointment, { id: uuid(), date, provider_id, user_id });
 
         this.appointments.push(appointment);
 
