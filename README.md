@@ -74,8 +74,8 @@
 
 **RN**
 
-- Por enquanto - Cada agendamento deve durar 1h exatamente;
-- Por enquanto - Os agendamentos devem estar disponíveis entre 8h às 18:00 (Primeiro às 8h e último às 17h);
+- **Mudar: O usuário deve definir o tempo do seu serviço prestado** - Cada agendamento deve durar 1h exatamente;
+- **Mudar: O usuário deve definir o tempo em que ele presta serviço** - Os agendamentos devem estar disponíveis entre 8h às 18:00 (Primeiro às 8h e último às 17h);
 - O usuário não pode agendar em um horário já ocupado;
 - O usuário não pode agendar em um horário que já passou;
 - O usuário não pode agendar serviços consigo mesmo;
