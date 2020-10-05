@@ -37,7 +37,7 @@ class CreateAppointmentService {
 
 
         if (getHours(appointmentDate) < 8 || getHours(appointmentDate) > 17) {
-            throw new AppError("You can't only create appointment between 8 am and 5pm");
+            throw new AppError("You can't only create appointment between 8 am and 5pm yourself");
         }
 
         const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
