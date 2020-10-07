@@ -2,6 +2,7 @@ import { Request, Response } from 'express';
 
 import UpdateUserAvatarService from '@modules/users/services/UpdateUserAvatarService';
 
+import { classToClass } from 'class-transformer';
 import { container } from 'tsyringe';
 
 //Como só se deve usar index, show, create, update e delete, e o update já estará ocupado;
@@ -18,8 +19,6 @@ export default class UserAvatarCntroller {
             avatarFilename: request.file.filename,
         });
 
-        delete user.password;
-
-        return response.json(user);
+        return response.json(classToClass(user));
     }
 }
