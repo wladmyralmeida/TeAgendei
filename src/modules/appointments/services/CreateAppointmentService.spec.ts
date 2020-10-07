@@ -1,17 +1,22 @@
 import 'reflect-metadata';
 import CreateAppointmentService from './CreateAppointmentService';
 import FakeAppointmentsRepository from '../repositories/fakes/FakeAppointmentsRepository';
+import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 
 import AppError from '@shared/errors/AppError';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let createAppointment: CreateAppointmentService;
+let fakeNotificationsRepository: FakeNotificationsRepository;
 
 describe('CreateAppointment', () => {
-    beforeEach(( ) => {
-         fakeAppointmentsRepository = new FakeAppointmentsRepository();
-         createAppointment = new CreateAppointmentService(
+    beforeEach(() => {
+        fakeAppointmentsRepository = new FakeAppointmentsRepository();
+        fakeNotificationsRepository = new FakeNotificationsRepository();
+
+        createAppointment = new CreateAppointmentService(
             fakeAppointmentsRepository,
+            fakeNotificationsRepository,
         );
     });
 
@@ -58,7 +63,7 @@ describe('CreateAppointment', () => {
                 date: new Date(2020, 4, 10, 11),
                 user_id: 'user-id',
                 provider_id: 'provider-id',
-            })
+            }),
         ).rejects.toBeInstanceOf(AppError);
     });
 
@@ -72,7 +77,7 @@ describe('CreateAppointment', () => {
                 date: new Date(2020, 4, 10, 13),
                 user_id: 'user-id',
                 provider_id: 'user-id',
-            })
+            }),
         ).rejects.toBeInstanceOf(AppError);
     });
 
@@ -86,7 +91,7 @@ describe('CreateAppointment', () => {
                 date: new Date(2020, 4, 11, 7),
                 user_id: 'user-id',
                 provider_id: 'provider-id',
-            })
+            }),
         ).rejects.toBeInstanceOf(AppError);
 
         await expect(
@@ -94,7 +99,7 @@ describe('CreateAppointment', () => {
                 date: new Date(2020, 4, 11, 18),
                 user_id: 'user-id',
                 provider_id: 'provider-id',
-            })
+            }),
         ).rejects.toBeInstanceOf(AppError);
     });
 });

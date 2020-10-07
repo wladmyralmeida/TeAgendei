@@ -23,16 +23,16 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95.45% </span>
+                <span class="strong">95.24% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>21/22</span>
+                <span class='fraction'>20/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">66.67% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/3</span>
+                <span class='fraction'>1/1</span>
             </div>
         
             
@@ -44,9 +44,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">95% </span>
+                <span class="strong">94.74% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>19/20</span>
+                <span class='fraction'>18/19</span>
             </div>
         
             
@@ -120,7 +120,8 @@
 <a name='L61'></a><a href='#L61'>61</a>
 <a name='L62'></a><a href='#L62'>62</a>
 <a name='L63'></a><a href='#L63'>63</a>
-<a name='L64'></a><a href='#L64'>64</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -137,26 +138,29 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,8 +168,6 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">31x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">31x</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -184,7 +186,7 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { injectable, inject } from 'tsyringe';
-import { getDaysInMonth, getDate, isAfter } from 'date-fns';
+import { getDaysInMonth, getDate } from 'date-fns';
 &nbsp;
 import IAppointmentsRepository from '../repositories/IAppointmentsRepository';
 &nbsp;
@@ -194,6 +196,7 @@ interface IRequest {
     year: number;
 }
 &nbsp;
+//Criar tipos de forma mais declarativa [ { day: 1, available: true, } ];
 type IResponse = Array&lt;{
     day: number;
     available: boolean;
@@ -211,33 +214,33 @@ class ListProviderMonthAvailabilityService {
         month,
         year,
     }: IRequest): Promise&lt;IResponse&gt; {
+        //First: Pegar todos os agendamentos no mês, horário e do prestador - AppointmentsRepository;
         const appointments = await this.appointmentsRepository.findAllInMonthFromProvider(
             {
                 provider_id,
-                month,
                 year,
+                month,
             },
         );
 &nbsp;
         const numberOfDaysInMonth = getDaysInMonth(new Date(year, month - 1));
 &nbsp;
+        //Array a partir do número de dias que o mês tem;
         const eachDayArray = Array.from(
             { length: numberOfDaysInMonth },
             (_, index) =&gt; index + 1,
         );
 &nbsp;
         const availability = eachDayArray.map(day =&gt; {
-            const compareDate = new Date(year, month - 1, day, 23, 59, 59);
-&nbsp;
             const appointmentsInDay = appointments.filter(<span class="fstat-no" title="function not covered" >appointment </span>=&gt; {
 <span class="cstat-no" title="statement not covered" >                return getDate(appointment.date) === day;</span>
             });
 &nbsp;
             return {
                 day,
-                available:
-                    isAfter(compareDate, new Date()) &amp;&amp;
-<span class="branch-1 cbranch-no" title="branch not covered" >                    appointmentsInDay.length &lt; 10,</span>
+                //TODO: Modificar aqui para ser possível que o usuário defina o seu próprio
+                //horário de atendimento;
+                available: appointmentsInDay.length &lt; 10,
             };
         });
 &nbsp;
@@ -253,7 +256,7 @@ export default ListProviderMonthAvailabilityService;
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank">istanbul</a>
-                at Tue Oct 06 2020 21:10:43 GMT-0300 (GMT-03:00)
+                at Tue Oct 06 2020 22:18:03 GMT-0300 (GMT-03:00)
             </div>
         </div>
         <script src="../../prettify.js"></script>
