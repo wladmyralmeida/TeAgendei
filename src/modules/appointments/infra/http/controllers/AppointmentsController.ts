@@ -14,14 +14,12 @@ export default class AppointmentsController {
 
         const user_id = request.user.id;
 
-        const parsedDate = parseISO(date);
-
         //Carregar o service, ver no seu constructor se ele tá precisando de qualquer dependencia
         //E vai no container com a dependencia passada e retorna a instancia dela;
         const createAppointment = container.resolve(CreateAppointmentService);
 
         const appointment = await createAppointment.execute({
-            date: parsedDate,
+            date: date,
             provider_id,
             user_id,
         });
