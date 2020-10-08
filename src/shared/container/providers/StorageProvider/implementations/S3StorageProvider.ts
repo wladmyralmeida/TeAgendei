@@ -10,7 +10,7 @@ class DiskStorageProvider implements IStorageProvider {
 
   constructor() {
     this.client = new aws.S3({
-      region: 'us-east-1',
+      region: 'us-east-2',
     });
   }
 
@@ -23,6 +23,7 @@ class DiskStorageProvider implements IStorageProvider {
       throw new Error('File not found');
     }
 
+    //Ler todo o conteúdo do arquivo;
     const fileContent = await fs.promises.readFile(originalPath);
 
     await this.client

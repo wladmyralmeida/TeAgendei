@@ -34,7 +34,7 @@ export default {
   config: {
     disk: {},
     aws: {
-      bucket: 'app-gobarber-2',
+      bucket: 'teagendei-app',
     },
   },
 } as IUploadConfig;
