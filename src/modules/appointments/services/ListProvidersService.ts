@@ -3,6 +3,8 @@ import { injectable, inject } from 'tsyringe';
 import User from '@modules/users/infra/typeorm/entities/User';
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
 
+import ICacheProvider from '@shared/container/providers/CacheProvider/models/ICacheProvider';
+
 interface IRequest {
     user_id: string;
 }
@@ -12,16 +14,24 @@ class ListProvidersService {
     constructor(
         @inject('UsersRepository')
         private usersRepository: IUsersRepository,
+
+        @inject('CacheProvider')
+        private cacheProvider: ICacheProvider,
     ) {}
 
-    public async execute({
-        user_id,
-    }: IRequest): Promise<User[]> {
-        //Objeto sendo passado para que o mesmo usuário não possa encontrá-lo na busca
-        //E assim realizar um agendamento consigo mesmo;
-        const users = await this.usersRepository.findAllProviders({
-            except_user_id: user_id,
-        });
+    public async execute({ user_id }: IRequest): Promise<User[]> {
+        let users = await this.cacheProvider.recover<User[]>(
+            `providers-list:${user_id}`,
+        );
+
+        if (!users) {
+            //Se não achar o usuário no cache, carrega ele novamente com seu respectivo id;
+            users = await this.usersRepository.findAllProviders({
+                except_user_id: user_id,
+            });
+        }
+
+        await this.cacheProvider.save(`providers-list:${user_id}`, users);
 
         return users;
     }

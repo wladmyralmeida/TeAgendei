@@ -36,6 +36,7 @@ class ListProviderAppointmentsService {
             year,
         });
 
+        console.log('A query no banco foi feita!');
         // await this.cacheProvider.save('asd', 'asd');
         return appointments;
     }
