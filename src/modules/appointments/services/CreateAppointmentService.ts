@@ -49,8 +49,10 @@ class CreateAppointmentService {
             );
         }
 
+        //Estava sem o id, e independente do prestador x ou y, ia dar que já tinha agendamento;
         const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
             appointmentDate,
+            provider_id,
         );
 
         if (findAppointmentInSameDate) {
@@ -63,14 +65,20 @@ class CreateAppointmentService {
             user_id,
         });
 
-        const dateFormatted = format(appointmentDate, "dd/MM/yyyy 'às' HH:mm'h'");
+        const dateFormatted = format(
+            appointmentDate,
+            "dd/MM/yyyy 'às' HH:mm'h'",
+        );
         await this.notificationsRepository.create({
             recipient_id: provider_id,
             content: `Novo agendamento para dia ${dateFormatted}`,
         });
 
         await this.cacheProvider.invalidate(`
-        provider-appointments:${provider_id}:${format(appointmentDate, 'yyyy-M-d')}`);
+        provider-appointments:${provider_id}:${format(
+            appointmentDate,
+            'yyyy-M-d',
+        )}`);
 
         return appointment;
     }
