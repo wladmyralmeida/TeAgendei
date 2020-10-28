@@ -31,8 +31,8 @@ class ListProviderMonthAvailabilityService {
         const appointments = await this.appointmentsRepository.findAllInMonthFromProvider(
             {
                 provider_id,
-                year,
                 month,
+                year,
             },
         );
 
