@@ -6,6 +6,7 @@ import IFindAllInMonthFromProviderDTO from '@modules/appointments/dtos/IFindAllI
 import IFindAllInDayFromProviderDTO from '@modules/appointments/dtos/IFindAllInDayFromProviderDTO';
 
 import { getRepository, Repository, Raw } from 'typeorm';
+import IFindByDateDTO from '@modules/appointments/dtos/IFindByDateDTO';
 
 class AppointmentsRepository implements IAppointmentsRepository {
     private ormRepository: Repository<Appointment>;
@@ -14,7 +15,11 @@ class AppointmentsRepository implements IAppointmentsRepository {
         this.ormRepository = getRepository(Appointment);
     }
 
-    public async findByDate(date: Date, provider_id: string): Promise<Appointment | undefined> {
+    public async findByDate({
+        date,
+        provider_id,
+    }: IFindByDateDTO): Promise<Appointment | undefined> {
+
         const findAppointment = await this.ormRepository.findOne({
             where: { date, provider_id },
         });

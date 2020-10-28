@@ -7,9 +7,9 @@ import { classToClass } from 'class-transformer';
 
 interface IRequest {
     provider_id: string;
-    day: number;
     month: number;
     year: number;
+    day: number;
 }
 
 @injectable()

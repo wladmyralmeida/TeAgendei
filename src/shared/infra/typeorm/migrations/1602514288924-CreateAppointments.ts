@@ -19,9 +19,8 @@ export class CreateAppointments1602514288924 implements MigrationInterface {
                         default: 'uuid_generate_v4()',
                     },
                     {
-                        name: 'provider_id',
-                        type: 'uuid',
-                        isNullable: true,
+                        name: 'provider',
+                        type: 'varchar',
                     },
                     {
                         name: 'date',
@@ -29,26 +28,15 @@ export class CreateAppointments1602514288924 implements MigrationInterface {
                     },
                     {
                         name: 'created_at',
-                        type: 'timestamp with time zone',
+                        type: 'timestamp',
                         default: 'now()',
                     },
                     {
                         name: 'updated_at',
-                        type: 'timestamp with time zone',
+                        type: 'timestamp',
                         default: 'now()',
                     },
                 ],
-            }),
-        );
-
-        await queryRunner.createForeignKey(
-            'appointments',
-            new TableForeignKey({
-                columnNames: ['provider_id'],
-                referencedColumnNames: ['id'],
-                referencedTableName: 'users',
-                onDelete: 'SET NULL',
-                onUpdate: 'CASCADE',
             }),
         );
     }

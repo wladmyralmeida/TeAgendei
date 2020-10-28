@@ -22,8 +22,8 @@ export class AddUserIdToAppointments1602514406043
             new TableForeignKey({
                 name: 'AppointmentUser',
                 columnNames: ['user_id'],
-                referencedTableName: 'users',
                 referencedColumnNames: ['id'],
+                referencedTableName: 'users',
                 onDelete: 'SET NULL',
                 onUpdate: 'CASCADE',
             }),
@@ -31,7 +31,7 @@ export class AddUserIdToAppointments1602514406043
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropForeignKey('appointments', 'AppointmentUser');
+        await queryRunner.dropForeignKey('appointments', 'AppointmentProvider');
         await queryRunner.dropColumn('appointments', 'user_id');
     }
 }

@@ -6,12 +6,12 @@ import {
     UpdateDateColumn,
     ManyToOne,
     JoinColumn,
-} from 'typeorm';
+  } from 'typeorm';
 
-import User from '@modules/users/infra/typeorm/entities/User';
+  import User from '@modules/users/infra/typeorm/entities/User';
 
-@Entity('appointments')
-class Appointment {
+  @Entity('appointments')
+  class Appointment {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -29,7 +29,7 @@ class Appointment {
     @JoinColumn({ name: 'user_id' })
     user: User;
 
-    @Column('timestamp with time zone')
+    @Column('timestamp without time zone')
     date: Date;
 
     @CreateDateColumn()
@@ -37,6 +37,6 @@ class Appointment {
 
     @UpdateDateColumn()
     updated_at: Date;
-}
+  }
 
-export default Appointment;
+  export default Appointment;
